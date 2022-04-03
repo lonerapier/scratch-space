@@ -126,3 +126,4 @@ Due to **LMD-GHOST** prefering liveness over safety, there is a chance of reorgs
 10. [eth2book](https://eth2.incessant.ink/book/03__eth1/07__clients.html)
 11. https://arxiv.org/pdf/2203.01315.pdf
 12. [LMD GHOST and Casper FFG](https://blog.ethereum.org/2020/02/12/validated-staking-on-eth2-2-two-ghosts-in-a-trench-coat/)
+13. [https://blog.ethereum.org/2019/12/30/eth1x-files-state-of-stateless-ethereum/](https://blog.ethereum.org/2019/12/30/eth1x-files-state-of-stateless-ethereum/)
