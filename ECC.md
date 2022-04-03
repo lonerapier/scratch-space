@@ -97,3 +97,11 @@ So, $\sqrt{256} = 128$ bits level of security is provided by curves like secp256
 secp256k1 is a Koblitz curve defined in a characteristic 2 finite field while secp256r1 is a prime field curve.
 
 Not going into details as to what a characteristic 2 finite field is, we can specify secp256r1 as a pseudo-randomised curve and secp256k1 as completely random curve which can’t be solved using discrete logarithm problem **yet**.
+
+## BLS Signatures
+
+
+## To-Read
+
+1. [https://medium.com/@VitalikButerin/exploring-elliptic-curve-pairings-c73c1864e627](https://medium.com/@VitalikButerin/exploring-elliptic-curve-pairings-c73c1864e627)
+2. [https://eth2book.info/altair/part2/building_blocks/signatures](https://eth2book.info/altair/part2/building_blocks/signatures)
