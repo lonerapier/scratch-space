@@ -4,24 +4,24 @@ Link: [https://eprint.iacr.org/2019/1128.pdf](https://eprint.iacr.org/2019/1128.
 
 Aims to develop a guide for designing protocols bridging different types of blockchains (distributed ledgers).
 
-Shows that CCC is impossible without ***third party.***
+Shows that CCC is impossible without **_third party._**
 
 Presents a framework keeping these trust assumptions in mind. Classifies current CCC protocols on the basis of framework.
 
 ## Introduction
 
-- NB-AC (*Non-Blocking Atomic Commit*) is used in distributed databases to ensure that correct processes don't have to wait for crashed processes to recover.
-- Can be extrapolated to distributed ledgers by handling *byzantine failures.*
+- NB-AC (_Non-Blocking Atomic Commit_) is used in distributed databases to ensure that correct processes don't have to wait for crashed processes to recover.
+- Can be extrapolated to distributed ledgers by handling _byzantine failures._
 
 ## Distributed Ledger Model
 
 - $X, Y$: Blockchains
-- $Lx$, $Ly$: ledgers with *states* as dynamically evolving sequences of *transactions*
-- state of ledgers progresses in round *r.*
-- $L^P[r]$:  state of ledger *L* at round *r* after all txs till *r-1*, according to some party *P.*
+- $Lx$, $Ly$: ledgers with _states_ as dynamically evolving sequences of _transactions_
+- state of ledgers progresses in round _r._
+- $L^P[r]$: state of ledger _L_ at round _r_ after all txs till _r-1_, according to some party _P._
 - Consistency is defined by the system
-- ($TX$, $Lx^P[r]$): tx *TX* is valid for *Lx* at round *r* according to *P.*
-- $TX$ ∈ $L^P[r]$: TX is included in *L* as position *r.*
+- ($TX$, $Lx^P[r]$): tx _TX_ is valid for _Lx_ at round _r_ according to _P._
+- $TX$ ∈ $L^P[r]$: TX is included in _L_ as position _r._
 - **Time** $L^P[t]$**:** ledger state at round r or time t.
 
 **Persistence**: $L^P[t] <= L^Q[t’]$, $L^P$ at time $t$ is prefix of $L^Q$ at time $t$’.
@@ -54,7 +54,7 @@ Goal: sync of P and Q such that Q is included iff P is included. For example, th
 1. **Setup**: inherently done by both blockchains due to the properties defined above
 2. **Pre-Commit on X**: $P$ writes $TX_P$ to $L^P_X$ at time $t$ in round $r$. Due to persistence and liveness, all honest parties report TX_P as valid in $r+u_x+k_x$.
 3. **Verify**: Q verifies $TX_P$.
-4. **Commit on Y:**  $Q$ writes $TX_Q$ to $L^Q_Y$ at time $t$’ in round $r$’.
+4. **Commit on Y:** $Q$ writes $TX_Q$ to $L^Q_Y$ at time $t$’ in round $r$’.
 5. **Abort**: revert $TX_P$ on $Lx$ in case of verification failure or $Q$ fails
 
 ![Image.png](https://res.craft.do/user/full/e83dd57b-d460-d205-2243-2f6ed8de496a/doc/2875A4D6-F00A-45A2-96EE-7222C31E634F/490D063A-EBE6-49DA-A5C7-D53342042837_2/q21xMyyBAkdRygr7FHp2PQr7J452ctL6JuxUysHHwccz/Image.png)
@@ -65,15 +65,15 @@ Pre-commit and commit on Y is executed in parallel following verification and ab
 
 ## Impossibility of CCC without TTP (Trusted Third Party)
 
-Analogous to ***Fair Exchange*** Problem.
+Analogous to **_Fair Exchange_** Problem.
 
 TTP is basically any entity, be it individual or a committee that either confirms a tx has been successfully included or enforce correct behaviour of $Q$ on $Ly$.
 
-Lemma 1: Let $M$ be a system model. Let $C$ be a protocol which solves $CCC$ in $M$. Then there exists a protocol $S$ which solves *Fair Exchange* in $M$.
+Lemma 1: Let $M$ be a system model. Let $C$ be a protocol which solves $CCC$ in $M$. Then there exists a protocol $S$ which solves _Fair Exchange_ in $M$.
 
 Sketch: to complete exchange, $TX_Q \in  Ly$ and $TX_P \in Lx$.
 
-- *effectiveness* enforces correct transfer for correct behaviour.
+- _effectiveness_ enforces correct transfer for correct behaviour.
 - Persistence and liveness enforce both txs to be eventually written to respective ledgers.
 - Atomicity $<->$ Strong Fairness in Fair exchange
 
@@ -141,8 +141,8 @@ Atomic exchange of digital goods: $x$ on Chain $X$ again $y$ on $Y$. Both partie
 
 Done through atomic swaps
 
-- Both parties lock assets on-chain with identical release conditions. *Hashed Timelock contracts* are the closest implementation of symmetric locks. Signature locks using *ECDSA* are also used.
-- On turing-complete blockchains, atomic swaps can be handled through smart contracts which can verify the state of chain $Y$ (*chain relay*).
+- Both parties lock assets on-chain with identical release conditions. _Hashed Timelock contracts_ are the closest implementation of symmetric locks. Signature locks using _ECDSA_ are also used.
+- On turing-complete blockchains, atomic swaps can be handled through smart contracts which can verify the state of chain $Y$ (_chain relay_).
 - Hybrid: symmetric with TTP is used to solve usability challenges in atomic swaps.
 
 #### Verify
@@ -172,7 +172,7 @@ Relies on a single/committee based external custodian for TTP or through multisi
 
 **Shards**: utilises the same security and consensus model as the main chain is same for all shards.
 
-*Bi-directional chain relays* can also be used if both chains support smart contracts and thus, locking/minting of assets can be handled through these contracts.
+_Bi-directional chain relays_ can also be used if both chains support smart contracts and thus, locking/minting of assets can be handled through these contracts.
 
 **Proof of Burn**: used for uni-directional flow as asset $x$ is burned on chain $X$.
 
@@ -221,6 +221,5 @@ didn’t understand perfectly
 - Interoperability chains: Cosmos and polkadot Layer 0 based ecosystems.
 - Light Clients: for better verification
 - Off-Chain Protocols
-   - Communication across off-chain channels
-   - Communication b/w on-chain and off-chain networks
-
+  - Communication across off-chain channels
+  - Communication b/w on-chain and off-chain networks
