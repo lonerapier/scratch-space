@@ -17,4 +17,5 @@ I may be totally wrong about things, please ignore or create a PR to help me :)
 
 ## Protocols
 
+- [Nomad.xyx](nomad-xyz.md)
 - [Socket Protocol](socket-dot-tech.md)
