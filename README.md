@@ -17,5 +17,6 @@ I may be totally wrong about things, please ignore or create a PR to help me :)
 
 ## Protocols
 
+- [Uniswap V3](UniswapV3.md)
 - [Nomad.xyx](nomad-xyz.md)
 - [Socket Protocol](socket-dot-tech.md)
