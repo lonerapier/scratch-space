@@ -132,15 +132,11 @@ An `Updater` can attest two identical roots, i.e. the roots share same sig in or
 
 ## Questions
 
-1. Why is an `Updater` called `Updater`? It's job is more like a validator.
+1. Why is an `Updater` called an `Updater` even tho its job is more like a validator?
 
-2. Can a `Relayer` send fraud messages? What if it does?
+2. Can a `Relayer` send fraudulent updates? What if it does, and who gets slashed in that case?
 
 No, it can't as it's job is just to relay whatever updates it polls to receiving chain.
-
-3. How fraud is proven back to the sending chain?
-
-Those messages are sent back to the source chain, which has old root and new root. The old root is then updated with new messages and checked with the new root. If found invalid, `Updater` is slashed.
 
 4. What are the future plans of tackling this optimistic timeout delay?
 
