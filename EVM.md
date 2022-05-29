@@ -1,34 +1,5 @@
 # EVM
 
-## Links
-
-[Deep Analysis of VM: What virtual machines are used by Ethereum and EOS?](https://hashgard.medium.com/deep-analysis-of-vm-what-virtual-machines-are-used-by-ethereum-and-eos-af925b9408a3)
-
-- [https://yoichihirai.com/malta-paper.pdf](https://yoichihirai.com/malta-paper.pdf)
-[EVM: From Solidity to byte code, memory and storage](https://www.youtube.com/watch?v=RxL_1AfV7N4&t=10s)
-
-- evm.codes
-- [https://cse.iitk.ac.in/users/dwivedi/Blockchain/bytecode.pdf](https://cse.iitk.ac.in/users/dwivedi/Blockchain/bytecode.pdf)
-[EVM bytecode programming - HackMD](https://hackmd.io/@e18r/r1yM3rCCd)
-
-[Ethereum Virtual Machine (EVM) | ethereum.org](https://ethereum.org/en/developers/docs/evm/)
-
-- [https://arxiv.org/pdf/2009.02663.pdf](https://arxiv.org/pdf/2009.02663.pdf)
-- [https://personal.utdallas.edu/~kxh060100/ayoade19blockchain.pdf](https://personal.utdallas.edu/~kxh060100/ayoade19blockchain.pdf)
-- [https://www.usenix.org/system/files/sec21_slides_rodler.pdf](https://www.usenix.org/system/files/sec21_slides_rodler.pdf)
-- [file:///Users/sambhavdusad/Downloads/Thesis.pdf](file:///Users/sambhavdusad/Downloads/Thesis.pdf)
-[Diving into Ethereum's Virtual Machine(EVM): the future of Ewasm - Second State News and Articles](https://blog.secondstate.io/post/20191029-ewasm/)
-
-[Using the Compiler — Solidity 0.8.11 documentation](https://docs.soliditylang.org/en/v0.8.11/using-the-compiler.html)
-
-[Reversing EVM bytecode with radare2](https://blog.positive.com/reversing-evm-bytecode-with-radare2-ab77247e5e53)
-
-[Solidity tips and tricks to save gas and reduce bytecode size](https://blog.polymath.network/solidity-tips-and-tricks-to-save-gas-and-reduce-bytecode-size-c44580b218e6)
-
-- [https://yinqian.org/papers/sec20.pdf](https://yinqian.org/papers/sec20.pdf)
-- [file:///Users/sambhavdusad/Downloads/publi-5936.pdf](file:///Users/sambhavdusad/Downloads/publi-5936.pdf)
-[Deconstructing a Solidity Contract — Part II: Creation vs. Runtime - OpenZeppelin blog](http://blog.openzeppelin.com/deconstructing-a-solidity-contract-part-ii-creation-vs-runtime-6b9d60ecb44c/)
-
 ## Opcodes
 
 32 bytes = 0x00..(60)..00
@@ -43,6 +14,7 @@
 | CALLVALUE         |                                                                                             |
 | JUMPI             | jump to stack[0] if stack[1] non-zero                                                       |
 | CODECOPY          | stack[0]: offset to copy to<br>stack[1]: offset to copy from<br>stack[2]: byte size to copy |
+| CALLDATACOPY      | sdvsv                                                                                       |
 
 ## Steps for constructor call:
 
@@ -137,8 +109,8 @@ JUMPI
 A.
 
 ```other
-function set(uint256 _param) external { 
-	val1 = _param;
+function set(uint256 _param) external {
+  val1 = _param;
 }
 ```
 
@@ -226,7 +198,7 @@ JUMP
 
 ```other
 JUMPDEST
-PUSH1 0x40 		|0x40|val2|0x63|
+PUSH1 0x40 		    |0x40|val2|0x63|
 DUP1				|0x40|0x40|val2|0x63|
 MLOAD				|0x80|0x40|val2|0x63|
 SWAP2 				|val2|0x40|0x80|0x63|
@@ -256,22 +228,22 @@ function () external payable { }
 ## Storage Layout
 
 ```other
-contract StorageLayout { 
-	byte private valByte; 				slot 0
-	uint256 private valUint256a; 		slot 1
-	uint32 private valUint32; 			slot 2
-	uint64 private valUint64; 			slot 2
-	address private valAddress; 		slot 2
-	uint256 private valUint256b;		slot 3
+contract StorageLayout {
+  byte private valByte; 				slot 0
+  uint256 private valUint256a; 		slot 1
+  uint32 private valUint32; 			slot 2
+  uint64 private valUint64; 			slot 2
+  address private valAddress; 		slot 2
+  uint256 private valUint256b;		slot 3
 
-	function set() external { 
-		valByte = 0x10;
-		valUint256a = 0x11; 
-		valUint32 = 0x12;
-		valUint64 = 0x13;
-		valAddress = address(0x14); 
-		valUint256b = 0x15;
-	}
+  function set() external {
+    valByte = 0x10;
+    valUint256a = 0x11;
+    valUint32 = 0x12;
+    valUint64 = 0x13;
+    valAddress = address(0x14);
+    valUint256b = 0x15;
+  }
 }
 ```
 
@@ -357,3 +329,119 @@ stored at `storage[keccak256(storage slot)+key] = value`
 
 `storage[keccak256(key.storage slot number)] = val`
 
+## How different storage variables are stored
+
+### uint256 vs uint32
+
+- [storing uint256 vs uint32](https://ethereum.stackexchange.com/questions/11828/difference-between-the-assembly-code-generated-for-uint-and-uint32)
+- [uint256 vs uint32](https://ethereum.stackexchange.com/questions/15382/why-is-the-jump-address-calculation-so-complex-in-compiled-solidity-code/23283#23283)
+
+1. storing variables = 32 bytes
+
+```other
+uint256 public a = 10;
+PUSH1 0xA
+PUSH1 0x0
+SSTORE
+```
+
+2. storing any variable less than 32 bytes.
+
+```solidity
+contract Simple {
+  uint32 b = 250;
+  uint32 c = 400;
+}
+```
+
+### Assembly for storing `c`
+
+Optimizer off
+
+```assembly
+010 PUSH1 fa
+012 PUSH1 01
+014 PUSH1 00
+016 PUSH2 0100
+019 EXP
+020 DUP2
+021 SLOAD
+022 DUP2
+023 PUSH4 ffffffff
+028 MUL
+029 NOT
+030 AND
+031 SWAP1
+032 DUP4
+033 PUSH4 ffffffff
+038 AND
+039 MUL
+040 OR
+041 SWAP1
+042 SSTORE
+043 POP
+044 PUSH2 0190          // push value to stack
+047 PUSH1 01            // push storage slot
+049 PUSH1 04            // push variable offset (4 because first 4 bytes is occupied by `b`)
+051 PUSH2 0100          // variable which will be used to shift till offset
+054 EXP                 // use exponentiation to shift to offset
+055 DUP2                // stack top becomes slot
+056 SLOAD               // load variable from slot 1 (in this case 0x000...0000fa) [0x000...000fa|0x000...00100000000|01|0190]
+057 DUP2                //
+058 PUSH4 ffffffff      //
+063 MUL                 // multiply 0x00..00100000000 with ffffffff -> 0x00..ffffffff00000000
+064 NOT                 // 0xffff...ff00000000ffffffff
+065 AND                 // apply mask to current stored variable
+066 SWAP1               // stack top becomes 0x00....00100000000
+067 DUP4                // 0190|0x00...00100000000|
+068 PUSH4 ffffffff      // 0x00..00ffffffff|0190|0x00...00100000000|0x00..00fa
+073 AND                 //
+074 MUL                 // take and and shift value to offset
+075 OR                  // take or to store with previous variables in the slot
+076 SWAP1               // stack top becomes slot
+077 SSTORE              // store
+```
+
+Optimizer on
+
+```assembly
+010 PUSH1 01
+012 DUP1
+013 SLOAD
+014 PUSH1 01
+016 PUSH1 01
+018 PUSH1 40
+020 SHL
+021 SUB
+022 NOT
+023 AND
+024 PUSH6 0190000000fa
+031 OR
+032 SWAP1
+033 SSTORE
+```
+
+## Links
+
+- [Notion list](https://noxx3xxon.notion.site/The-EVM-Handbook-bb38e175cc404111a391907c4975426d)
+- [Deep Analysis of VM: What virtual machines are used by Ethereum and EOS?](https://hashgard.medium.com/deep-analysis-of-vm-what-virtual-machines-are-used-by-ethereum-and-eos-af925b9408a3)
+- [https://yoichihirai.com/malta-paper.pdf](https://yoichihirai.com/malta-paper.pdf)
+- [EVM: From Solidity to byte code, memory and storage](https://www.youtube.com/watch?v=RxL_1AfV7N4&t=10s)
+- [evm.codes](https://evm.codes)
+- [https://cse.iitk.ac.in/users/dwivedi/Blockchain/bytecode.pdf](https://cse.iitk.ac.in/users/dwivedi/Blockchain/bytecode.pdf)
+  [EVM bytecode programming - HackMD](https://hackmd.io/@e18r/r1yM3rCCd)
+- [https://arxiv.org/pdf/2009.02663.pdf](https://arxiv.org/pdf/2009.02663.pdf)
+- [https://personal.utdallas.edu/~kxh060100/ayoade19blockchain.pdf](https://personal.utdallas.edu/~kxh060100/ayoade19blockchain.pdf)
+- [https://www.usenix.org/system/files/sec21_slides_rodler.pdf](https://www.usenix.org/system/files/sec21_slides_rodler.pdf)
+- [file:///Users/sambhavdusad/Downloads/Thesis.pdf]
+- [Diving into Ethereum's Virtual Machine(EVM): the future of Ewasm - Second State News and Articles](https://blog.secondstate.io/post/20191029-ewasm/)
+- [Using the Compiler — Solidity 0.8.11 documentation](https://docs.soliditylang.org/en/v0.8.11/using-the-compiler.html)
+- [Reversing EVM bytecode with radare2](https://blog.positive.com/reversing-evm-bytecode-with-radare2-ab77247e5e53)
+- [Solidity tips and tricks to save gas and reduce bytecode size](https://blog.polymath.network/solidity-tips-and-tricks-to-save-gas-and-reduce-bytecode-size-c44580b218e6)
+- [https://yinqian.org/papers/sec20.pdf](https://yinqian.org/papers/sec20.pdf)
+- [file:///Users/sambhavdusad/Downloads/publi-5936.pdf](file:///Users/sambhavdusad/Downloads/publi-5936.pdf)
+- [Deconstructing a Solidity Contract — Part II: Creation vs. Runtime - OpenZeppelin blog](http://blog.openzeppelin.com/deconstructing-a-solidity-contract-part-ii-creation-vs-runtime-6b9d60ecb44c/)
+
+### Mistakes
+
+- [EVM Design Mistakes](https://medium.com/coinmonks/10-evm-design-mistakes-7c9a75a77ee9)
