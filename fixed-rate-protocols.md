@@ -137,6 +137,7 @@ So, the capital efficieny of the pool is improved by making the excess fyToken's
 - [Element finance paper](https://paper.element.fi//)
 - [Messari's Fixed Income Protocol](https://messari.io/article/fixed-income-protocols-the-next-wave-of-defi-innovation)
 - [Designing Yield Tokens](https://medium.com/sensefinance/designing-yield-tokens-d20c34d96f56)
+- [Swivel's cash flow instruments Pt.1  ](https://swivel.substack.com/p/cash-flow-instruments-pt-1-history?s=r)
 - [Defization of fixed income products](https://medium.com/coinmonks/the-defization-of-fixed-income-products-7e72ed4f57b1)
 - [Defixed income](https://medium.com/@exactly_finance/defixed-income-101-948976c0e2c6)
 - [Notional](https://medium.com/coinmonks/notional-the-alpha-of-fixed-income-defi-products-a5637d2092b5)
