@@ -128,6 +128,40 @@ struct Info {
 }
 ```
 
+### Fee Growth
+
+Each position update require updates in fees inside that range.
+
+$$
+\begin{equation}
+  f_r = f_g - f_b(i_l) - f_a(i_u)
+\end{equation}
+$$
+
+$$
+\begin{equation}
+  f_a(i) =
+  \begin{aligned}
+    \begin{cases}
+      f_g - f_o(i) & {i_c \ge i} \\
+      f_o(i) & i_c < i
+    \end{cases}
+  \end{aligned}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+  f_b(i) =
+  \begin{aligned}
+    \begin{cases}
+      f_o(i) & {i_c \ge i} \\
+      f_g - f_o(i) & i_c < i
+    \end{cases}
+  \end{aligned}
+\end{equation}
+$$
+
 ### Mint or Burn Flow
 
 ```solidity
@@ -136,14 +170,21 @@ mint(address recipient, int24 tickLower, int24 tickUpper, uint128 amount, bytes 
 burn(int24 tickLower, int24 tickUpper, uint128 amount)
 ```
 
-1. Update position
-   1. update lower and upper tick with data
-2. if `liquidityDelta != 0`, calculate `amount0` and `amount1` according to tick range
-   1. `currentTick < tickLower`: all liquidity in token0
-   2. `currentTick > tickUpper`: all liquidity in token1
-   3. else, write oracle entry, calculate `amount0` and `amount1`
-3. call mintcallback or burn callback
-4. update balances if burn or check balances if mint
+1. Modify position
+   1. check ticks
+   2. update position
+      1. get position
+      2. if `liquidityDelta != 0`, `observeSingle`
+      3. update lower and upper tick with data
+      4. if either flipped, update ticks bitmap
+      5. get `feeGrowthInside{0,1}X128`
+      6. update position
+   3. if `liquidityDelta != 0`, calculate `amount0` and `amount1` according to tick range
+      1. `currentTick < tickLower`: all liquidity in token0
+      2. `currentTick > tickUpper`: all liquidity in token1
+      3. else, write oracle entry, calculate `amount0` and `amount1`
+2. call mintcallback or burn callback
+3. update balances if burn or check balances if mint
 
 ## Oracles
 
