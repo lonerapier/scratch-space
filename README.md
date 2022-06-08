@@ -19,4 +19,6 @@ I may be totally wrong about things, please ignore or create a PR to help me :)
 
 - [Uniswap V3](UniswapV3.md)
 - [Nomad.xyx](nomad-xyz.md)
+- [Fixed Rate Protocols](fixed%20rate%20protocols/fixed-rate-protocols.md)
+- [Sense Finance](fixed%20rate%20protocols/sense-finance.md)
 - [Socket Protocol](socket-dot-tech.md)

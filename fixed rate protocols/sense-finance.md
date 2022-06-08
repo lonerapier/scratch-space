@@ -52,7 +52,6 @@ Depends on three main criteria,
 2. yield on target i.e. yield bearing assets
 3. space trading fees
 
-
 ## Use cases
 
 - Fixed rate earners
@@ -65,6 +64,10 @@ Depends on three main criteria,
 
 ### Space pool LP returns
 
+
+## Sense Implementation
+
+Check out [Sense implementation file](./sense-finance-impl.md).
 
 
 ## Resources
