@@ -22,3 +22,7 @@ I may be totally wrong about things, please ignore or create a PR to help me :)
 - [Fixed Rate Protocols](fixed%20rate%20protocols/fixed-rate-protocols.md)
 - [Sense Finance](fixed%20rate%20protocols/sense-finance.md)
 - [Socket Protocol](socket-dot-tech.md)
+
+## Talks
+
+- [ETH vs physics]()
