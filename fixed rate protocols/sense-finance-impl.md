@@ -19,18 +19,13 @@ mapping(adapter -> maturity -> poolAddress)
 
 Functions:
 
-```
+```solidity
 createPool
 setPool
 setParams
 ```
 
 ### Space
-
-Questions:
-
-1. what is adapter scale?
-2.
 
 storage:
 
@@ -125,7 +120,6 @@ oracleData
 
 `_updateOracle`: updates oracle indexes on current timestamp
 
-
 #### **Mocks/Test Utils**
 
 **User** submits his liquidity to space using `join`, exits using `exit` and `swapIn`, `swapOut` for swapping PT/target tokens in the pool.
@@ -161,10 +155,6 @@ swapOut(principalIn, amountOut)
 A series is a particular set of PTs and YTs with a specific target, adapter, and maturity.
 
 Sense core contracts is based on hub and spoke model, where hub is the *Divider* contract and *spokes* are contracts that surround Divider like Adapters.
-
-### Divider
-
-*issue*/*combine* PTs and YTs, *redeem* and *collect* target.
 
 ---
 
@@ -250,7 +240,6 @@ Functions:
 
 `wrapUnderlying(uint256 uBal)`
 
-
 ### WstETHAdapter: `crop`
 
 Target/Underlying: WstETH/WETH
@@ -290,12 +279,14 @@ Target/Underlying: WstETH/WETH
 
 ### Divider
 
+*issue*/*combine* PTs and YTs, *redeem* and *collect* target.
+
 ```solidity
 struct Series {
   address yt;
   uint48 issuance;
   address pt;
-  uint96 tilt;        // ?
+  uint96 tilt;        //  % of underlying principal initially reserved for Yield
   address sponsor;
   uint256 reward;
   uint256 iscale;
@@ -318,3 +309,68 @@ mapping(address => AdapterMeta) adapters;
 mapping(address => mapping(uint256 => mapping(address => uint256))) lscales;
 ```
 
+#### Functions
+
+`function issue(address adapter, uint256 maturity, uint256 tBal) returns (uint256 uBal)`
+
+issuance scale is used
+
+- basic checks: adapter valid, series exists, series not already settled
+- check if adapter level authorises issuance
+- get adapter ifee, target
+- find $fee = tBal*ifee$ and get `tBalSubFee`
+- add fee to series reward
+- check adapter `guard` cap
+- notify adapter and update values
+- scale = series.iscale or adapter scale
+- find $uBal = tBalSubFee * scale$
+- update user lscale value, if first init then scale else harmonic mean
+- mint PT and YT
+- transfer target to divider
+
+`function redeem(address adapter, uint256 maturity, uint256 uBal)`
+
+scale is either mscale or maxscale depending on zshare
+
+- mandatory checks: adapter valid, series settled
+- check if redeem enabled
+- burn PT
+- convert uBal to tBal after checking `zShare = 1 - tilt`
+- transfer target
+
+`function combine(address adapter, uint256 maturity, uint256 uBal) returns (uint256 tBal)`
+
+since this is before maturity, scale is either current scale or last scale
+
+- check adapter, series
+- burn pt
+- get cscale as mscale
+- collect extra YT
+- if series not settled, burn YT as it won't burn in collect and change cscale to current
+- get $tBal = uBal / cscale$
+- transfer tBal target to msg.sender
+- notify adapter
+- update `tBal += collected` from YT _collect
+
+`function collect(address adapter, uint256 maturity, uint256 uBal)`
+
+-
+
+---
+
+### Periphery
+
+```solidity
+divider
+BalanceVault balancerVault
+PoolManager poolManager
+SpaceFactoryLike spaceFactory
+mapping(address => bool) factories
+mapping(address => bool) verified;
+```
+
+`function swapTargetForPTs`
+`function swapTargetForYTs`
+`function swapUnderlyingForPTs`
+`function swapUnderlyingForYTs`
+`function swap`
