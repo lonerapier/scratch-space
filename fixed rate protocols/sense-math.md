@@ -185,7 +185,7 @@ y\left( \frac{1}{S(t_m)} - \left( \frac{1}{S(t_m)} - \frac{(1 - \theta)}{s(t_m)}
 y \frac{(1 - \theta)}{s(t_m)} = x_z
 $$
 
-So, in a summy day scenario, $X_z = x_z$ and $X_c = x_c$.
+So, in a sunny day scenario, $X_z = x_z$ and $X_c = x_c$.
 
 ### Not So Sunny Day
 
@@ -213,7 +213,7 @@ $$
 
 ### Sunny Day Condition
 
-Lets transform the summy day condition a bit:
+Lets transform the sunny day condition a bit:
 
 $$
 y\left( \frac{1}{S(t_m)} - \frac{(1 - \theta)}{s(t_m)} \right) \geqslant 0 \\
