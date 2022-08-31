@@ -90,4 +90,5 @@ This encoding is used for trie paths.
 Patricia tree
 
 [patricia-tree](https://eth.wiki/fundamentals/patricia-tree)
+[Understanding trie databases](https://medium.com/shyft-network-media/understanding-trie-databases-in-ethereum-9f03d2c3325d)
 

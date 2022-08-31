@@ -128,3 +128,4 @@ Due to **LMD-GHOST** prefering liveness over safety, there is a chance of reorgs
 12. [LMD GHOST and Casper FFG](https://blog.ethereum.org/2020/02/12/validated-staking-on-eth2-2-two-ghosts-in-a-trench-coat/)
 13. [https://blog.ethereum.org/2019/12/30/eth1x-files-state-of-stateless-ethereum/](https://blog.ethereum.org/2019/12/30/eth1x-files-state-of-stateless-ethereum/)
 14. [Understanding validator effective balance](https://www.attestant.io/posts/understanding-validator-effective-balancehttps://www.attestant.io/posts/understanding-validator-effective-balance/)
+15. [0xfoobar's Proof of Stake](https://0xfoobar.substack.com/p/ethereum-proof-of-stake)

@@ -67,11 +67,11 @@ Depends on three main criteria,
 
 ## Sense Implementation
 
-Check out [Sense implementation file](./sense-finance-impl.md).
-
+Check out [Sense implementation file](./sense-finance-impl.md) and [Sense Math](sense-math.md).
 
 ## Resources
 
 - [Medium](https://medium.com/sensefinance)
 - [Github](https://github.com/sense-finance)
 - [Website](https://sense.finance)
+- [Sense interactions](https://docs.google.com/spreadsheets/d/1u--kIr18av6RPTyTZbs_ryMVv2maSsd-NxDFpUkF-Uo/edit#gid=0)
